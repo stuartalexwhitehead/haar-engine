@@ -30,9 +30,13 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">5.5.0"
+    "node": ">=5.5.0"
   },
   "pre-commit": [
     "eslint"
-  ]
+  ],
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5"
+  }
 }
