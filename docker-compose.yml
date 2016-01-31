@@ -1,4 +1,4 @@
-web:
+app:
   container_name: haar-engine_app
   build: .
   ports:
