@@ -22,6 +22,7 @@
     "Real-Time"
   ],
   "devDependencies": {
+    "chai": "^3.5.0",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^4.0.0",
     "eslint-plugin-react": "^3.16.1",
