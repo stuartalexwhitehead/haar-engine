@@ -1,10 +1,10 @@
+const engine = require('./lib/app');
+
 const haar = {
   app: null,
   server: null,
   io: null,
-  start() {
-    // No start method… yet
-  },
+  engine,
 };
 
 module.exports = Object.create(haar);
