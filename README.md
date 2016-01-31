@@ -1,4 +1,5 @@
 # Haar Engine
+![Travis CI](https://travis-ci.org/stuartalexwhitehead/haar-engine.svg?branch=master)
 Haar Engine is a research-led framework for Internet of Things applications. It builds on design principles from existing IoT platforms and technologies, while navigating the minefield of challanges - challenges such as firewalls, Network Address Translation and IPv6 uptake.  
 
 This project has been the focus of my Honours year project for BSc Computer Science at the Robert Gordon University. There are five related repositories:
