@@ -1,6 +1,6 @@
 # Haar Engine
 
-![Travis CI](https://travis-ci.org/stuartalexwhitehead/haar-engine.svg?branch=master)
+[![Travis CI](https://travis-ci.org/stuartalexwhitehead/haar-engine.svg?branch=master)](https://travis-ci.org/stuartalexwhitehead/haar-engine)
 
 Haar Engine is a research-led framework for Internet of Things applications. It builds on design principles from existing IoT platforms and technologies, while navigating the minefield of challanges - challenges such as firewalls, Network Address Translation and IPv6 uptake.  
 
