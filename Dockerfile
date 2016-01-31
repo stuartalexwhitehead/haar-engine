@@ -13,7 +13,7 @@ RUN apt-get install --yes nodejs
 COPY . /src
 
 # Install dependancies
-RUN cd /src; npm install
+RUN cd /src; npm install; npm install -g mocha
 
 # Runtime
 EXPOSE 3000
