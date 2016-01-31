@@ -5,3 +5,12 @@ services:
 
 script:
   - docker-compose run app /bin/bash -c "cd /src && npm test"
+
+after_success:
+  - |
+      if [[ ($TRAVIS_BRANCH == master) &&
+            ($TRAVIS_PULL_REQUEST == false) &&
+            ( (! $TRAVIS_JOB_NUMBER == *.*) || ($TRAVIS_JOB_NUMBER == *.1) ) ]] ; then
+        curl -LO https://raw.github.com/mernst/plume-lib/master/bin/trigger-travis.sh
+        sh trigger-travis.sh stuartalexwhitehead haar-api $TRAVIS_ACCESS_TOKEN
+      fi
