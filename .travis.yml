@@ -4,4 +4,4 @@ services:
   - docker
 
 script:
-  - docker-compose run app /bin/bash -c "cd /src; npm test"
+  - docker-compose run app /bin/bash -c "cd /src && npm test"
