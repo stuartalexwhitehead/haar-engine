@@ -2,15 +2,16 @@
   "name": "haar-engine",
   "version": "0.0.0",
   "description": "Haar Engine is a research-led framework for Internet of Things applications",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/stuartalexwhitehead/haar-engine.git"
-  },
-  "main": "index.js",
+  "author": "Stuart Whitehead",
   "scripts": {
     "start": "node --use_strict index.js",
     "test": "mocha",
     "eslint": "node_modules/eslint/bin/eslint.js --ext .jsx,.js $(git status --porcelain -uno | egrep '.js(x)?$' | egrep '^M|^A' | sed 's/^.* //g' | tr '\n' ' ')"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stuartalexwhitehead/haar-engine.git"
   },
   "keywords": [
     "IoT",
@@ -20,17 +21,16 @@
     "Sensors",
     "Real-Time"
   ],
-  "author": "Stuart Whitehead",
-  "license": "MIT",
-  "engines": {
-    "node": ">5.5.0"
-  },
   "devDependencies": {
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^4.0.0",
     "eslint-plugin-react": "^3.16.1",
     "mocha": "^2.4.5",
     "pre-commit": "^1.1.2"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">5.5.0"
   },
   "pre-commit": [
     "eslint"
