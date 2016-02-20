@@ -37,6 +37,7 @@ describe('User model', function() {
         password: 'test123',
         email: 'test@example.com',
       }, function (err, createdUser) {
+        console.log('create error: ' + err);
         assert.isNull(err);
         assert.equal(createdUser.name.given, 'Test');
         assert.equal(createdUser.name.family, 'User');
@@ -49,6 +50,7 @@ describe('User model', function() {
     it('should hash password', function(done) {
 
       UserModel.findOne({ username: 'tester'}, function(err, doc) {
+        console.log('pre error: ' + err);
         assert.isNull(err);
         assert.notEqual(doc.password, 'test123');
         done();
@@ -61,6 +63,7 @@ describe('User model', function() {
 
       UserModel.findOne({ username: 'tester'}, function(err, doc) {
         doc.comparePassword('test123', function(err, isMatch) {
+          console.log('compare error: ' + err);
           assert.isNull(err);
           assert.isOk(isMatch);
           done();
