@@ -4,11 +4,26 @@ const mongoose = require('mongoose');
 
 describe('User model', function() {
 
-  before(function(done){
-    for (var i in mongoose.connection.collections) {
-      mongoose.connection.collections[i].remove(function() {});
+  before(function (done) {
+
+    function clearDB() {
+      for (var i in mongoose.connection.collections) {
+        mongoose.connection.collections[i].remove(function() {});
+      }
+      return done();
     }
-    done();
+
+
+    if (mongoose.connection.readyState === 0) {
+      mongoose.connect(`mongodb://${process.env.HAAR_ENGINE_MONGO_PORT_27017_TCP_ADDR}/haar`, function (err) {
+        if (err) {
+          throw err;
+        }
+        return clearDB();
+      });
+    } else {
+      return clearDB();
+    }
   });
 
   describe('#create', function() {
