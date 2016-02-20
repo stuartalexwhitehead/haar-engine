@@ -6,6 +6,7 @@ RUN apt-get update && \
 
 # Install Node.js and NPM
 RUN apt-get --yes install curl
+RUN apt-get --yes install build-essential
 RUN curl -sL https://deb.nodesource.com/setup_5.x | bash -
 RUN apt-get install --yes nodejs
 RUN apt-get clean
