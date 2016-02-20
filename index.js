@@ -1,8 +1,7 @@
+require('dotenv').config({ silent: true });
+
 const haar = {
-  app: null,
-  server: null,
-  io: null,
-  engine: require('./lib/app'),
+  init: require('./lib/app/init'),
 };
 
 module.exports = Object.create(haar);
