@@ -1,7 +1,6 @@
 mongo:
   container_name: haar-engine_mongo
   image: mongo
-  command: mongod --auth
 app:
   container_name: haar-engine_app
   build: .
