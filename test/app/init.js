@@ -12,7 +12,7 @@ describe('Haar', function() {
       assert.isTrue(typeof haar.init === 'function');
     });
 
-    it('should initialise defaults', function() {
+    it('should expose modules', function() {
       const haar = require('../../index');
       haar.init();
 
@@ -20,18 +20,6 @@ describe('Haar', function() {
       assert.isTrue(typeof haar.server !== 'undefined');
       assert.isTrue(typeof haar.io !== 'undefined');
       assert.isTrue(typeof haar.db !== 'undefined');
-    });
-
-    it('should initialise with options', function() {
-      const haar = require('../../index');
-      const app = require('express')();
-      const mongoose = require('mongoose');
-
-      haar.init({
-        app: app,
-      });
-
-      assert.isTrue(haar.app == app);
     });
   });
 });
