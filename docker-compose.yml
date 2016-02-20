@@ -1,3 +1,7 @@
+mongo:
+  container_name: haar-engine_mongo
+  image: mongo
+  command: mongod --auth
 app:
   container_name: haar-engine_app
   build: .
@@ -8,6 +12,3 @@ app:
     - /src/node_modules # http://stackoverflow.com/questions/30043872/docker-compose-node-modules-not-present-in-a-volume-after-npm-install-succeeds
   links:
     - mongo
-mongo:
-  container_name: haar-engine_mongo
-  image: mongo
