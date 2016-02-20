@@ -4,7 +4,7 @@
   "description": "Haar Engine is a research-led framework for Internet of Things applications",
   "author": "Stuart Whitehead",
   "scripts": {
-    "start": "node --use_strict index.js",
+    "start": "node --use_strict --harmony_default_parameters bootstrap.js",
     "test": "mocha --harmony_default_parameters",
     "eslint": "node_modules/eslint/bin/eslint.js --ext .jsx,.js $(git status --porcelain -uno | egrep '.js(x)?$' | egrep '^M|^A' | sed 's/^.* //g' | tr '\n' ' ')"
   },
