@@ -5,7 +5,7 @@
   "author": "Stuart Whitehead",
   "scripts": {
     "start": "node --use_strict index.js",
-    "test": "mocha",
+    "test": "mocha --harmony_default_parameters",
     "eslint": "node_modules/eslint/bin/eslint.js --ext .jsx,.js $(git status --porcelain -uno | egrep '.js(x)?$' | egrep '^M|^A' | sed 's/^.* //g' | tr '\n' ' ')"
   },
   "main": "index.js",
@@ -37,7 +37,11 @@
     "eslint"
   ],
   "dependencies": {
+    "bcrypt": "^0.8.5",
+    "dotenv": "^2.0.0",
     "express": "^4.13.4",
+    "lodash": "^4.5.0",
+    "mongoose": "^4.4.4",
     "socket.io": "^1.4.5"
   }
 }
