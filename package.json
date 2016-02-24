@@ -5,7 +5,7 @@
   "author": "Stuart Whitehead",
   "scripts": {
     "start": "node --use_strict --harmony_default_parameters bootstrap.js",
-    "test": "mocha --harmony_default_parameters",
+    "test": "mocha",
     "eslint": "node_modules/eslint/bin/eslint.js --ext .jsx,.js $(git status --porcelain -uno | egrep '.js(x)?$' | egrep '^M|^A' | sed 's/^.* //g' | tr '\n' ' ')"
   },
   "main": "index.js",
@@ -27,7 +27,9 @@
     "eslint-config-airbnb": "^4.0.0",
     "eslint-plugin-react": "^3.16.1",
     "mocha": "^2.4.5",
-    "pre-commit": "^1.1.2"
+    "pre-commit": "^1.1.2",
+    "should": "^8.2.2",
+    "supertest": "^1.2.0"
   },
   "license": "MIT",
   "engines": {
@@ -37,6 +39,7 @@
     "eslint"
   ],
   "dependencies": {
+    "async": "^1.5.2",
     "bcrypt": "^0.8.5",
     "body-parser": "^1.15.0",
     "dotenv": "^2.0.0",

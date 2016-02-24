@@ -1,5 +1,5 @@
-const assert = require('chai').assert;
-const dbUtils = require('../dbUtils');
+const should = require('should');
+const dbUtils = require('../utils/clear-database');
 const UserModel = require('../../lib/models/user');
 const mongoose = require('mongoose');
 
@@ -12,13 +12,13 @@ describe('User model', function() {
           given: 'Test',
           family: 'User',
         },
-        username: 'tester',
+        username: 'usermodel',
         password: 'test123',
         email: 'test@example.com',
       }, function (err, createdUser) {
-        assert.isNull(err);
-        assert.equal(createdUser.name.given, 'Test');
-        assert.equal(createdUser.name.family, 'User');
+        should(err).be.null();
+        should(createdUser.name.given).be.equal('Test');
+        should(createdUser.name.family).be.equal('User');
         done();
       });
     });
@@ -27,9 +27,9 @@ describe('User model', function() {
   describe('#pre', function() {
     it('should hash password', function(done) {
 
-      UserModel.findOne({ username: 'tester'}, function(err, doc) {
-        assert.isNull(err);
-        assert.notEqual(doc.password, 'test123');
+      UserModel.findOne({ username: 'usermodel'}, function(err, doc) {
+        should(err).be.null();
+        should(doc.password).not.be.equal('test123');
         done();
       });
     });
@@ -38,10 +38,10 @@ describe('User model', function() {
   describe('#comparePassword', function() {
     it('should compare password', function(done) {
 
-      UserModel.findOne({ username: 'tester'}, function(err, doc) {
+      UserModel.findOne({ username: 'usermodel'}, function(err, doc) {
         doc.comparePassword('test123', function(err, isMatch) {
-          assert.isNull(err);
-          assert.isOk(isMatch);
+          should(err).be.null();
+          should(isMatch).be.exactly(true);
           done();
         });
       });
