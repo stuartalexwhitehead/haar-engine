@@ -20,7 +20,6 @@ describe('Users controller', function() {
       users = seeds;
       done();
     });
-
   });
 
   describe('POST /users', function() {
