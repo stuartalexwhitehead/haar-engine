@@ -1,4 +1,4 @@
-const assert = require('chai').assert;
+const should = require('should');
 const dbUtils = require('../dbUtils');
 const UserModel = require('../../lib/models/user');
 const mongoose = require('mongoose');
@@ -16,9 +16,9 @@ describe('User model', function() {
         password: 'test123',
         email: 'test@example.com',
       }, function (err, createdUser) {
-        assert.isNull(err);
-        assert.equal(createdUser.name.given, 'Test');
-        assert.equal(createdUser.name.family, 'User');
+        should(err).be.null();
+        should(createdUser.name.given).be.equal('Test');
+        should(createdUser.name.family).be.equal('User');
         done();
       });
     });
@@ -28,8 +28,8 @@ describe('User model', function() {
     it('should hash password', function(done) {
 
       UserModel.findOne({ username: 'tester'}, function(err, doc) {
-        assert.isNull(err);
-        assert.notEqual(doc.password, 'test123');
+        should(err).be.null();
+        should(doc.password).not.be.equal('test123');
         done();
       });
     });
@@ -40,8 +40,8 @@ describe('User model', function() {
 
       UserModel.findOne({ username: 'tester'}, function(err, doc) {
         doc.comparePassword('test123', function(err, isMatch) {
-          assert.isNull(err);
-          assert.isOk(isMatch);
+          should(err).be.null();
+          should(isMatch).be.exactly(true);
           done();
         });
       });
