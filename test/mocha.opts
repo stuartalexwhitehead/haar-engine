@@ -1,2 +1,4 @@
 --reporter nyan
 --recursive
+--use_strict
+--harmony_default_parameters
