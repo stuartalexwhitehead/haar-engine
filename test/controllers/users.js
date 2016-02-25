@@ -1,6 +1,8 @@
 const should = require('should');
 const request = require('supertest');
 const async = require('async');
+const mongoose = require('mongoose');
+
 const clearDatabase = require('../utils/clear-database');
 const seedUsers = require('../utils/seed-users');
 const UserModel = require('../../lib/models/user');
@@ -12,14 +14,22 @@ describe('Users controller', function() {
   before(function (done) {
     haar.init();
 
-    seedUsers(function (err, seeds) {
+    async.series({
+      clearDatabase: clearDatabase,
+      seedUsers: seedUsers,
+    }, function (err, results) {
       if (err) {
-        throw new Error (err);
+        throw new Error(err);
       }
 
-      users = seeds;
+      users = results.seedUsers;
       done();
     });
+  });
+
+  after(function (done) {
+    mongoose.disconnect();
+    return done();
   });
 
   describe('POST /users', function() {
@@ -110,7 +120,7 @@ describe('Users controller', function() {
   describe('GET /users/:user', function() {
     it('should enforce authorisation', function(done) {
       request(haar.app)
-        .get(`/users/${users.user2.id}`)
+        .get(`/users/${users.user2.model._id}`)
         .set('x-access-token', users.user.token)
         .expect('Content-Type', /json/)
         .expect(function (res) {
