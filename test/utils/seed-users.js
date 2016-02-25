@@ -1,6 +1,7 @@
 require('dotenv').config({ silent: true });
 const async = require('async');
 const jwt = require('jsonwebtoken');
+
 const config = require('../../lib/app/config');
 const UserModel = require('../../lib/models/user');
 
