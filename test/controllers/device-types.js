@@ -5,24 +5,27 @@ const mongoose = require('mongoose');
 
 const clearDatabase = require('../utils/clear-database');
 const seedUsers = require('../utils/seed-users');
-const UserModel = require('../../lib/models/user');
+const seedDeviceTypes = require('../utils/seed-device-types');
 const haar = require('../../index');
 
 let users = null;
+let deviceTypes = null;
 
-describe('Users controller', function() {
+describe('Device types controller', function () {
   before(function (done) {
     haar.init();
 
     async.series({
       clearDatabase: clearDatabase,
       seedUsers: seedUsers,
+      seedDeviceTypes: seedDeviceTypes,
     }, function (err, results) {
       if (err) {
         throw new Error(err);
       }
 
       users = results.seedUsers;
+      deviceTypes = results.seedDeviceTypes;
       done();
     });
   });
@@ -32,10 +35,10 @@ describe('Users controller', function() {
     return done();
   });
 
-  describe('POST /users', function() {
-    it('should enforce authorisation', function(done) {
+  describe('POST /device-types', function () {
+    it('should enforce authorisation', function (done) {
       request(haar.app)
-        .post('/users')
+        .post('/device-types')
         .set('x-access-token', users.user.token)
         .expect('Content-Type', /json/)
         .expect(function (res) {
@@ -44,10 +47,9 @@ describe('Users controller', function() {
         .end(done);
     });
 
-    it('should validate incorrect fields', function(done) {
+    it('should enforce validation', function (done) {
       request(haar.app)
-        .post('/users')
-        .type('form')
+        .post('/device-types')
         .set('x-access-token', users.admin.token)
         .expect('Content-Type', /json/)
         .expect(function (res) {
@@ -57,43 +59,26 @@ describe('Users controller', function() {
         .end(done);
     });
 
-    it('should create a new user', function(done) {
+    it('should create device type', function (done) {
       request(haar.app)
-        .post('/users')
-        .type('form')
-        .set('x-access-token', users.admin.token)
+        .post('/device-types')
         .send({
-          name: {
-            given: 'Users',
-            family: 'Controller',
-          },
-          username: 'userscontroller',
-          password: 'userscontroller',
-          email: 'controller@example.com',
+          name: 'Test Device',
+          description: 'A test device',
+          developer: 'Haar Engine',
+          deviceClass: 'output',
+          dataDescriptor: [
+            {
+              label: 'A Measurement',
+              unit: {
+                longform: 'Seconds',
+                shortform: 's',
+              },
+              max: 2000,
+              min: 500,
+            },
+          ]
         })
-        .expect('Content-Type', /json/)
-        .expect(function (res) {
-          should(res.body.status).be.exactly('success');
-        })
-        .end(done);
-    });
-  });
-
-  describe('GET /users', function() {
-    it('should enforce authorisation', function(done) {
-      request(haar.app)
-        .get('/users')
-        .set('x-access-token', users.user.token)
-        .expect('Content-Type', /json/)
-        .expect(function (res) {
-          should(res.body.status).be.exactly('fail');
-        })
-        .end(done);
-    });
-
-    it('should list users', function(done) {
-      request(haar.app)
-        .get('/users')
         .set('x-access-token', users.admin.token)
         .expect('Content-Type', /json/)
         .expect(function (res) {
@@ -103,24 +88,38 @@ describe('Users controller', function() {
     });
   });
 
-  describe('GET /users/me', function() {
-    it('should retrieve details for authenticated user', function(done) {
+  describe('GET /device-types', function () {
+    it('should list device types', function (done) {
       request(haar.app)
-        .get('/users/me')
+        .get('/device-types')
         .set('x-access-token', users.user.token)
         .expect('Content-Type', /json/)
         .expect(function (res) {
           should(res.body.status).be.exactly('success');
-          should(res.body.data._id).be.equal(users.user.model._id.toString());
+          should(res.body.data).not.be.null();
         })
         .end(done);
     });
   });
 
-  describe('GET /users/:user', function() {
-    it('should enforce authorisation', function(done) {
+  describe('GET /device-types/:deviceType', function () {
+    it('should retrieve information for the specified device type', function (done) {
       request(haar.app)
-        .get(`/users/${users.user2.model._id}`)
+        .get(`/device-types/${deviceTypes.sensor.model._id}`)
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('success');
+          should(res.body.data).not.be.null();
+        })
+        .end(done);
+    });
+  });
+
+  describe('PUT /device-types/:deviceType', function () {
+    it('should enforce authorisation', function (done) {
+      request(haar.app)
+        .put(`/device-types/${deviceTypes.sensor.model._id}`)
         .set('x-access-token', users.user.token)
         .expect('Content-Type', /json/)
         .expect(function (res) {
@@ -129,35 +128,11 @@ describe('Users controller', function() {
         .end(done);
     });
 
-    it('should retrieve fields for given user', function(done) {
+    it('should enforce validation', function (done) {
       request(haar.app)
-        .get(`/users/${users.user2.model._id}`)
+        .put(`/device-types/${deviceTypes.sensor.model._id}`)
+        .send('deviceClass=wrong')
         .set('x-access-token', users.admin.token)
-        .expect('Content-Type', /json/)
-        .expect(function (res) {
-          should(res.body.status).be.exactly('success');
-        })
-        .end(done);
-    });
-  });
-
-  describe('PUT /users/:user', function() {
-    it('should enforce authorisation', function(done) {
-      request(haar.app)
-        .put(`/users/${users.user2.model._id}`)
-        .set('x-access-token', users.user.token)
-        .expect('Content-Type', /json/)
-        .expect(function (res) {
-          should(res.body.status).be.exactly('fail');
-        })
-        .end(done);
-    });
-
-    it('should trigger validation rules', function(done) {
-      request(haar.app)
-        .put(`/users/${users.user.model._id}`)
-        .set('x-access-token', users.user.token)
-        .send('email=')
         .expect('Content-Type', /json/)
         .expect(function (res) {
           should(res.body.status).be.exactly('fail');
@@ -166,24 +141,24 @@ describe('Users controller', function() {
         .end(done);
     });
 
-    it('should update fields for given user', function(done) {
+    it('should update specified device type', function (done) {
       request(haar.app)
-        .put(`/users/${users.user.model._id}`)
-        .set('x-access-token', users.user.token)
-        .send('name[family]=Another')
+        .put(`/device-types/${deviceTypes.sensor.model._id}`)
+        .send('deviceClass=output')
+        .set('x-access-token', users.admin.token)
         .expect('Content-Type', /json/)
         .expect(function (res) {
           should(res.body.status).be.exactly('success');
-          should(res.body.data.name.family).be.exactly('Another');
+          should(res.body.data.deviceClass).be.exactly('output');
         })
         .end(done);
     });
   });
 
-  describe('DELETE /users/:user', function() {
-    it('should enforce authorisation', function(done) {
+  describe('DELETE /device-types/:deviceType', function () {
+    it('should enforce authorisation', function (done) {
       request(haar.app)
-        .delete(`/users/${users.user2.model._id}`)
+        .delete(`/device-types/${deviceTypes.sensor.model._id}`)
         .set('x-access-token', users.user.token)
         .expect('Content-Type', /json/)
         .expect(function (res) {
@@ -192,9 +167,9 @@ describe('Users controller', function() {
         .end(done);
     });
 
-    it('should remove the specified user', function(done) {
+    it('should delete specified device type', function (done) {
       request(haar.app)
-        .delete(`/users/${users.user2.model._id}`)
+        .delete(`/device-types/${deviceTypes.sensor.model._id}`)
         .set('x-access-token', users.admin.token)
         .expect('Content-Type', /json/)
         .expect(function (res) {

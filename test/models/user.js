@@ -1,9 +1,25 @@
 const should = require('should');
-const dbUtils = require('../utils/clear-database');
-const UserModel = require('../../lib/models/user');
 const mongoose = require('mongoose');
+const async= require('async');
+
+const clearDatabase = require('../utils/clear-database');
+const haar = require('../../index');
+const UserModel = require('../../lib/models/user');
 
 describe('User model', function() {
+
+  before(function (done) {
+    haar.init();
+
+    clearDatabase(function () {
+      done();
+    });
+  });
+
+  after(function (done) {
+    mongoose.disconnect();
+    return done();
+  });
 
   describe('#create', function() {
     it('should create a new user', function(done) {
@@ -26,7 +42,6 @@ describe('User model', function() {
 
   describe('#pre', function() {
     it('should hash password', function(done) {
-
       UserModel.findOne({ username: 'usermodel'}, function(err, doc) {
         should(err).be.null();
         should(doc.password).not.be.equal('test123');
@@ -37,7 +52,6 @@ describe('User model', function() {
 
   describe('#comparePassword', function() {
     it('should compare password', function(done) {
-
       UserModel.findOne({ username: 'usermodel'}, function(err, doc) {
         doc.comparePassword('test123', function(err, isMatch) {
           should(err).be.null();

@@ -1,10 +1,11 @@
 require('dotenv').config({ silent: true });
 const async = require('async');
 const jwt = require('jsonwebtoken');
+
 const config = require('../../lib/app/config');
 const UserModel = require('../../lib/models/user');
 
-function seedUsers (cb) {
+function seedUsers (callback) {
   async.parallel({
     user: function seedUser (cb) {
       UserModel.create({
@@ -93,7 +94,7 @@ function seedUsers (cb) {
       }
     }
 
-    cb(err, users);
+    callback(err, users);
   });
 }
 
