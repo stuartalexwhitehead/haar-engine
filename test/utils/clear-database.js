@@ -1,24 +1,14 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const initDb = require('../../lib/app/initDatabase');
 
-before(function (done) {
-
-  function clearDB() {
+function clearDatabase(cb) {
+  initDb(function () {
     for (var i in mongoose.connection.collections) {
       mongoose.connection.collections[i].remove(function() {});
     }
-    return done();
-  }
+    
+    cb(null, null);
+  });
+}
 
-  if (mongoose.connection.readyState === 0) {
-    require('../lib/app/initDatabase')(function () {
-      return clearDB();
-    });
-  } else {
-    return clearDB();
-  }
-});
-
-after(function (done) {
-  mongoose.disconnect();
-  return done();
-});
+module.exports = clearDatabase;
