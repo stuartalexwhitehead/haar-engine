@@ -22,6 +22,40 @@ describe('Device type model', function() {
   });
 
   describe('#create', function() {
+    it('should enforce unique data descriptors', function(done) {
+      DeviceTypeModel.create({
+        name: 'Test Sensor',
+        description: 'A test sensor',
+        developer: 'Haar Engine',
+        deviceClass: 'input',
+        dataDescriptor: [
+          {
+            label: 'Time',
+            name: 'time',
+            unit: {
+              longform: 'Seconds',
+              shortform: 's',
+            },
+            max: 60,
+            min: 0,
+          },
+          {
+            label: 'Fail Time',
+            name: 'time',
+            unit: {
+              longform: 'Seconds',
+              shortform: 's',
+            },
+            max: 60,
+            min: 0,
+          },
+        ]
+      }, function (err, deviceType) {
+        should(err).not.be.null();
+        done();
+      });
+    });
+
     it('should create a new device type', function(done) {
       DeviceTypeModel.create({
         name: 'Test Sensor',
@@ -31,6 +65,7 @@ describe('Device type model', function() {
         dataDescriptor: [
           {
             label: 'Time',
+            name: 'time',
             unit: {
               longform: 'Seconds',
               shortform: 's',
