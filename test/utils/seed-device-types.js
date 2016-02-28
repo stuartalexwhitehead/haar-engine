@@ -15,6 +15,7 @@ function seedDeviceTypes (callback) {
         dataDescriptor: [
           {
             label: 'Time',
+            name: 'time',
             unit: {
               longform: 'Seconds',
               shortform: 's',
@@ -34,6 +35,7 @@ function seedDeviceTypes (callback) {
         dataDescriptor: [
           {
             label: 'Time',
+            name: 'time',
             unit: {
               longform: 'Seconds',
               shortform: 's',
