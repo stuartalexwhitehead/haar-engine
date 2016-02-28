@@ -42,16 +42,11 @@ describe('Device model', function() {
       DeviceModel.create({
         name: 'Test Sensor Device',
         description: 'A test sensor device',
-        deviceType: deviceTypes.sensor.model._id.toString(),
-        owner: users.user.model._id.toString(),
-        address64: '1234567812345678',
+        deviceType: deviceTypes.sensor.model._id,
+        owner: users.user.model._id,
+        address: '1234567812345678',
       }, function (err, device) {
         should(err).be.null();
-        // should(device.name).be.equal('Test Sensor Device');
-        // should(device.description).be.equal('A test sensor device');
-        // should(device.deviceType.toString()).be.equal(deviceTypes.sensor.model._id);
-        // should(device.owner.toString()).be.equal(users.user.model._id);
-        // should(device.address64).be.equal('1234567812345678');
         done();
       });
     });
