@@ -1,6 +1,6 @@
 {
   "name": "haar-engine",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Haar Engine is a research-led framework for Internet of Things applications",
   "author": "Stuart Whitehead",
   "scripts": {
