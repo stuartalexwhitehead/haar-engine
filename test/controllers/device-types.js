@@ -70,6 +70,7 @@ describe('Device types controller', function () {
           dataDescriptor: [
             {
               label: 'A Measurement',
+              name: 'measurement',
               unit: {
                 longform: 'Seconds',
                 shortform: 's',

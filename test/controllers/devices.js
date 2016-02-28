@@ -60,7 +60,8 @@ describe('Devices controller', function () {
           name: 'Unit Test',
           description: 'A device for unit testing',
           deviceType: deviceTypes.actuator.model._id,
-          address64: '123456781234567b',
+          visibility: 'private',
+          address: '123456781234567b',
         })
         .set('x-access-token', users.user.token)
         .expect('Content-Type', /json/)

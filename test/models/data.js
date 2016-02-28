@@ -4,14 +4,16 @@ const async= require('async');
 
 const clearDatabase = require('../utils/clear-database');
 const haar = require('../../index');
-const DeviceModel = require('../../lib/models/device-type');
+const DataModel = require('../../lib/models/data');
 const seedUsers = require('../utils/seed-users');
 const seedDeviceTypes = require('../utils/seed-device-types');
+const seedDevices = require('../utils/seed-devices');
 
 let users = null;
 let deviceTypes = null;
+let devices = null;
 
-describe('Device model', function() {
+describe('Data model', function() {
 
   before(function (done) {
     haar.init();
@@ -28,7 +30,10 @@ describe('Device model', function() {
       users = results.seedUsers;
       deviceTypes = results.seedDeviceTypes;
 
-      done();
+      seedDevices(users, deviceTypes, function (err, seedDevices) {
+        devices = seedDevices;
+        done();
+      });
     });
   });
 
@@ -38,15 +43,22 @@ describe('Device model', function() {
   });
 
   describe('#create', function() {
-    it('should create a new device', function(done) {
-      DeviceModel.create({
-        name: 'Test Sensor Device',
-        description: 'A test sensor device',
-        deviceType: deviceTypes.sensor.model._id,
-        owner: users.user.model._id,
-        address: '1234567812345678',
-      }, function (err, device) {
+    it('should store a data point', function(done) {
+      DataModel.create({
+        device: devices.sensor.model._id,
+        data: [{
+          name: 'red',
+          value: 255,
+        }, {
+          name: 'green',
+          value: 255,
+        }, {
+          name: 'blue',
+          value: 255,
+        }]
+      }, function (err, data) {
         should(err).be.null();
+        should(data.data.length).be.equal(3);
         done();
       });
     });

@@ -12,7 +12,18 @@ function seedDevices(users, deviceTypes, callback) {
         description: 'A test sensor device',
         deviceType: deviceTypes.sensor.model._id,
         owner: users.user.model._id,
-        address64: '1234567812345678',
+        visibility: 'public',
+        address: '1234567812345678',
+      }, cb);
+    },
+    sensor2: function seedSensor2 (cb) {
+      DeviceModel.create({
+        name: 'Private Test Sensor Device',
+        description: 'A test sensor device',
+        deviceType: deviceTypes.sensor.model._id,
+        owner: users.user.model._id,
+        visibility: 'private',
+        address: '123456781234567c',
       }, cb);
     },
     actuator: function seedActuator (cb) {
@@ -21,7 +32,8 @@ function seedDevices(users, deviceTypes, callback) {
         description: 'A test actuator device',
         deviceType: deviceTypes.actuator.model._id,
         owner: users.user.model._id,
-        address64: '123456781234567a',
+        visibility: 'private',
+        address: '123456781234567a',
       }, cb);
     },
   }, function (err, results) {
@@ -32,6 +44,9 @@ function seedDevices(users, deviceTypes, callback) {
     callback(err, {
       sensor: {
         model: results.sensor.toObject(),
+      },
+      sensor2: {
+        model: results.sensor2.toObject(),
       },
       actuator: {
         model: results.actuator.toObject(),
