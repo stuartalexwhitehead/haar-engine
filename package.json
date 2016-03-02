@@ -23,13 +23,13 @@
   ],
   "devDependencies": {
     "chai": "^3.5.0",
+    "engine.io-client": "^1.6.8",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^4.0.0",
     "eslint-plugin-react": "^3.16.1",
     "mocha": "^2.4.5",
     "pre-commit": "^1.1.2",
     "should": "^8.2.2",
-    "socket.io-client": "^1.4.5",
     "supertest": "^1.2.0"
   },
   "license": "MIT",
@@ -44,10 +44,13 @@
     "bcrypt": "^0.8.5",
     "body-parser": "^1.15.0",
     "dotenv": "^2.0.0",
+    "engine.io": "^1.6.8",
     "express": "^4.13.4",
     "jsonwebtoken": "^5.7.0",
     "lodash": "^4.5.0",
     "mongoose": "^4.4.4",
-    "socket.io": "^1.4.5"
+    "primus": "^4.0.5",
+    "primus-responder-haar": "git://github.com/stuartalexwhitehead/primus-responder.git",
+    "primus-rooms": "^3.4.0"
   }
 }
