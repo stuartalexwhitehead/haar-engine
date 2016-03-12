@@ -1,7 +1,6 @@
 require('dotenv').config({ silent: true });
 const async = require('async');
 
-const config = require('../../lib/app/config');
 const DeviceTypeModel = require('../../lib/models/device-type');
 
 function seedDeviceTypes (callback) {
