@@ -1,8 +1,8 @@
 require('dotenv').config({ silent: true });
 const async = require('async');
 const jwt = require('jsonwebtoken');
+const config = require('nconf');
 
-const config = require('../../lib/app/config');
 const UserModel = require('../../lib/models/user');
 
 function seedUsers (callback) {
@@ -52,7 +52,7 @@ function seedUsers (callback) {
       name: results.user.name.full,
       role: results.user.role,
     }, 
-    config.jwt.secret, 
+    config.get('JWT:SECRET'),
     {
       expiresIn: '1 day',
     });
@@ -63,7 +63,7 @@ function seedUsers (callback) {
       name: results.user2.name.full,
       role: results.user2.role,
     }, 
-    config.jwt.secret, 
+    config.get('JWT:SECRET'),
     {
       expiresIn: '1 day',
     });
@@ -74,7 +74,7 @@ function seedUsers (callback) {
       name: results.admin.name.full,
       role: results.admin.role,
     }, 
-    config.jwt.secret, 
+    config.get('JWT:SECRET'),
     {
       expiresIn: '1 day',
     });
