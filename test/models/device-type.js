@@ -5,11 +5,12 @@ const async= require('async');
 const clearDatabase = require('../utils/clear-database');
 const haar = require('../../index');
 const DeviceTypeModel = require('../../lib/models/device-type');
+const config = require('../utils/haar-config');
 
 describe('Device type model', function() {
 
   before(function (done) {
-    haar.init();
+    haar.init(config);
 
     clearDatabase(function () {
       done();

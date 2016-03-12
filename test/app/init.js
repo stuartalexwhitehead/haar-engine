@@ -1,5 +1,7 @@
 const should = require('should');
 
+const config = require('../utils/haar-config');
+
 describe('Haar', function() {
   describe('config settings', function() {
     it('should not exist', function() {
@@ -14,7 +16,7 @@ describe('Haar', function() {
 
     it('should expose modules', function() {
       const haar = require('../../index');
-      haar.init();
+      haar.init(config);
 
       should(haar.app).not.be.undefined();
       should(haar.server).not.be.undefined();

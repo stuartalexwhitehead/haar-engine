@@ -7,6 +7,7 @@ const clearDatabase = require('../utils/clear-database');
 const seedUsers = require('../utils/seed-users');
 const seedDeviceTypes = require('../utils/seed-device-types');
 const seedDevices = require('../utils/seed-devices');
+const config = require('../utils/haar-config');
 const haar = require('../../index');
 
 let users = null;
@@ -15,7 +16,7 @@ let devices = null;
 
 describe('Realtime authentication middleware', function () {
   before(function (done) {
-    haar.init();
+    haar.init(config);
 
     async.series({
       clearDatabase: clearDatabase,

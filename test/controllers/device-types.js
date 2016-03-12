@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const clearDatabase = require('../utils/clear-database');
 const seedUsers = require('../utils/seed-users');
 const seedDeviceTypes = require('../utils/seed-device-types');
+const config = require('../utils/haar-config');
 const haar = require('../../index');
 
 let users = null;
@@ -13,7 +14,7 @@ let deviceTypes = null;
 
 describe('Device types controller', function () {
   before(function (done) {
-    haar.init();
+    haar.init(config);
 
     async.series({
       clearDatabase: clearDatabase,

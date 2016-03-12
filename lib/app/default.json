@@ -1,0 +1,11 @@
+{
+  "JWT": {
+    "SECRET" : null
+  },
+  "MONGO": {
+    "HOST" : "127.0.0.1",
+    "DATABASE" : "haar",
+    "USERNAME" : null,
+    "PASSWORD" : null
+  }
+}

@@ -5,13 +5,14 @@ const mongoose = require('mongoose');
 
 const clearDatabase = require('../utils/clear-database');
 const seedUsers = require('../utils/seed-users');
+const config = require('../utils/haar-config');
 const haar = require('../../index');
 
 let users = null;
 
 describe('Authenticate controller', function () {
   before(function (done) {
-    haar.init();
+    haar.init(config);
 
     async.series({
       clearDatabase: clearDatabase,

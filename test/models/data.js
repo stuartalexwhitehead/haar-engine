@@ -8,6 +8,7 @@ const DataModel = require('../../lib/models/data');
 const seedUsers = require('../utils/seed-users');
 const seedDeviceTypes = require('../utils/seed-device-types');
 const seedDevices = require('../utils/seed-devices');
+const config = require('../utils/haar-config');
 
 let users = null;
 let deviceTypes = null;
@@ -16,7 +17,7 @@ let devices = null;
 describe('Data model', function() {
 
   before(function (done) {
-    haar.init();
+    haar.init(config);
 
     async.series({
       clearDatabase: clearDatabase,

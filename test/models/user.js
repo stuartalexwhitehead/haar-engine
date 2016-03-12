@@ -3,13 +3,14 @@ const mongoose = require('mongoose');
 const async= require('async');
 
 const clearDatabase = require('../utils/clear-database');
+const config = require('../utils/haar-config');
 const haar = require('../../index');
 const UserModel = require('../../lib/models/user');
 
 describe('User model', function() {
 
   before(function (done) {
-    haar.init();
+    haar.init(config);
 
     clearDatabase(function () {
       done();
