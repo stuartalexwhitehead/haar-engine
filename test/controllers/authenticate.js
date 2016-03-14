@@ -54,8 +54,9 @@ describe('Authenticate controller', function () {
         .set('x-access-token', users.user.token)
         .expect('Content-Type', /json/)
         .expect(function (res) {
+          console.log(res.body.data);
           should(res.body.status).be.exactly('success');
-          should(res.body.token).not.be.null();
+          should(res.body.data.token).not.be.null();
         })
         .end(done);
     });
