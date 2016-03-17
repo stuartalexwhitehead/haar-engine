@@ -75,10 +75,35 @@ describe('Devices controller', function () {
   });
 
   describe('GET /devices', function () {
+    it('should enforce authorisation', function (done) {
+      request(haar.app)
+        .get('/devices')
+        .set('x-access-token', users.user2.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('fail');
+        })
+        .end(done);
+    });
+
     it('should retrieve a list of devices', function (done) {
       request(haar.app)
         .get('/devices')
         .set('x-access-token', users.admin.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('success');
+          should(res.body.data).not.be.null();
+        })
+        .end(done);
+    });
+  });
+
+  describe('GET /devices/mine', function () {
+    it('should retrieve a list of devices', function (done) {
+      request(haar.app)
+        .get('/devices/mine')
+        .set('x-access-token', users.user.token)
         .expect('Content-Type', /json/)
         .expect(function (res) {
           should(res.body.status).be.exactly('success');
