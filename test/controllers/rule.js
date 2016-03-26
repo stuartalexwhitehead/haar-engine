@@ -171,6 +171,52 @@ describe('Rules controller', function () {
     });
   });
 
+  describe('GET /rules/:rule', function () {
+    it('should require a rule ID', function (done) {
+      request(haar.app)
+        .get('/rules/abc')
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).not.be.equal('success');
+        })
+        .end(done);
+    });
+
+    it('should require a device', function (done) {
+      request(haar.app)
+        .get('/rules')
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('fail');
+        })
+        .end(done);
+    });
+
+    it('should enforce device ownership', function (done) {
+      request(haar.app)
+        .get(`/rules/${rules.rule.model._id}`)
+        .set('x-access-token', users.user2.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('fail');
+        })
+        .end(done);
+    });
+    it('should get the specified rule', function (done) {
+      request(haar.app)
+        .get(`/rules/${rules.rule.model._id}`)
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('success');
+          should(res.body.data).not.be.null();
+        })
+        .end(done);
+    });
+  });
+
   describe('PUT /rules/:rule', function () {
     it('should require a rule ID', function (done) {
       request(haar.app)
