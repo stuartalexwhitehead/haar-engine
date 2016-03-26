@@ -7,12 +7,14 @@ const clearDatabase = require('../utils/clear-database');
 const seedUsers = require('../utils/seed-users');
 const seedDeviceTypes = require('../utils/seed-device-types');
 const seedDevices = require('../utils/seed-devices');
+const seedRules = require('../utils/seed-rules');
 const config = require('../utils/haar-config');
 const haar = require('../../index');
 
 let users = null;
 let deviceTypes = null;
 let devices = null;
+let rules = null;
 
 describe('Rules controller', function () {
   before(function (done) {
@@ -32,7 +34,11 @@ describe('Rules controller', function () {
 
       seedDevices(users, deviceTypes, function (err, seedDevices) {
         devices = seedDevices;
-        done();
+
+        seedRules(devices, function(err, seedRules) {
+          rules = seedRules;
+          done();
+        });
       });
     });
   });
@@ -160,6 +166,174 @@ describe('Rules controller', function () {
         .expect('Content-Type', /json/)
         .expect(function (res) {
           should(res.body.status).be.exactly('success');
+        })
+        .end(done);
+    });
+  });
+
+  describe('PUT /rules/:rule', function () {
+    it('should require a rule ID', function (done) {
+      request(haar.app)
+        .put('/rules/abc')
+        .send({
+          name: 'Updated rule',
+        })
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).not.be.equal('success');
+        })
+        .end(done);
+    });
+
+    it('should enforce device classes', function (done) {
+      request(haar.app)
+        .put(`/rules/${rules.rule.model._id}`)
+        .send({
+          name: 'Updated Rule',
+          output: devices.sensor2.model._id
+        })
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('fail');
+        })
+        .end(done);
+    });
+
+    it('should enforce device ownership', function (done) {
+      request(haar.app)
+        .put(`/rules/${rules.rule.model._id}`)
+        .send({
+          name: 'Updated Rule',
+        })
+        .set('x-access-token', users.user2.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('fail');
+        })
+        .end(done);
+    });
+
+    it('should update the specified rule', function (done) {
+      request(haar.app)
+        .put(`/rules/${rules.rule.model._id}`)
+        .send({
+          name: 'Updated Rule',
+        })
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('success');
+          should(res.body.data).not.be.null();
+        })
+        .end(done);
+    });
+  });
+
+  describe('PUT /rules/:rule/enable', function () {
+    it('should require a rule ID', function (done) {
+      request(haar.app)
+        .put('/rules/abc/enable')
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).not.be.equal('success');
+        })
+        .end(done);
+    });
+
+    it('should enforce authorisation', function (done) {
+      request(haar.app)
+        .put(`/rules/${rules.rule.model._id}/enable`)
+        .set('x-access-token', users.user2.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).not.be.equal('success');
+        })
+        .end(done);
+    });
+
+    it('should enable the specified rule', function (done) {
+      request(haar.app)
+        .put(`/rules/${rules.rule.model._id}/enable`)
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('success');
+          should(res.body.data).not.be.null();
+        })
+        .end(done);
+    });
+  });
+
+  describe('PUT /rules/:rule/disable', function () {
+    it('should require a rule ID', function (done) {
+      request(haar.app)
+        .put('/rules/abc/disable')
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).not.be.equal('success');
+        })
+        .end(done);
+    });
+
+    it('should enforce authorisation', function (done) {
+      request(haar.app)
+        .put(`/rules/${rules.rule.model._id}/disable`)
+        .set('x-access-token', users.user2.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).not.be.equal('success');
+        })
+        .end(done);
+    });
+
+    it('should disable the specified rule', function (done) {
+      request(haar.app)
+        .put(`/rules/${rules.rule.model._id}/disable`)
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('success');
+          should(res.body.data).not.be.null();
+        })
+        .end(done);
+    });
+  });
+
+  describe('DELETE /rules/:rule', function () {
+    it('should require a rule ID', function (done) {
+      request(haar.app)
+        .delete('/rules/abc')
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).not.be.equal('success');
+        })
+        .end(done);
+    });
+
+    it('should enforce authorisation', function (done) {
+      request(haar.app)
+        .delete(`/rules/${rules.rule.model._id}`)
+        .set('x-access-token', users.user2.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).not.be.equal('success');
+        })
+        .end(done);
+    });
+
+    it('should delete the specified rule', function (done) {
+      request(haar.app)
+        .delete(`/rules/${rules.rule.model._id}`)
+        .set('x-access-token', users.user.token)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          should(res.body.status).be.exactly('success');
+          should(res.body.data).not.be.null();
         })
         .end(done);
     });
